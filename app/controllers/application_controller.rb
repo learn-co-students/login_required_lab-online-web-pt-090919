@@ -3,18 +3,16 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   
-  def current_user
-    if params[:name].empty?
-      session[:name].nil
-    else
-      session[:name] = params[:name]
-    end
+  def hello
+    redirect_to controller: 'sessions', action: 'new' unless session[:name]
   end
   
-  def logged_in?
-    session[:name] = params[:name]
-    redirect_to "/"
+  def current_user
+    session[:name]
+  end
+  
+  def require_logged_in
+    redirect_to controller: 'sessions', action: 'new' unless current_user
   end
 end
-
 
